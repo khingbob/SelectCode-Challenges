@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600&display=swap");
 body {
+  display: flex;
   margin: 0;
   padding: 0;
   background-color: #eae5e5;
@@ -42,6 +43,7 @@ navigation bar */
   align-items: center;
   box-sizing: border-box;
   position: relative;
+  z-index: 5;
   width: max(5vw, 100px);
   height: 100dvh;
   padding: 1vh 0;
@@ -166,6 +168,50 @@ navigation bar */
     border: 1px solid #203d89;
     animation: none;
   }
+}
+
+/* || Main Content */
+main {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+main header {
+  display: flex;
+  position: fixed;
+  width: 100%;
+  padding: 0 2vw 0.5vh 2vw;
+  color: #6b6b6b;
+  background-color: #eae5e5;
+}
+main header .header-left {
+  height: 100%;
+}
+main header .header-left .logo-dash-cont {
+  height: 100%;
+}
+main header .header-left .logo-dash-cont h1 {
+  margin: 1vh 0;
+  font-weight: 400;
+  font-size: max(5vh, 30px);
+}
+main header .header-left .logo-dash-cont .main-logo {
+  display: none;
+}
+@media (max-width: 800px) {
+  main header .header-left .logo-dash-cont .main-logo {
+    display: block;
+    height: max(8vh, 40px);
+  }
+}
+main header .header-left .header-details {
+  font-size: max(2vh, 10px);
+}
+main header .user-icon {
+  height: max(8vh, 40px);
+  position: fixed;
+  right: 2vw;
+  cursor: pointer;
 }
 
 /* || Horizontal flow with 0.5vw gap and vertical centering*/
