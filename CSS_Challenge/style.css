@@ -1,7 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600&display=swap");
 body {
   margin: 0;
   padding: 0;
   background-color: #eae5e5;
+  font-family: Inter, Arial, sans-serif;
+}
+
+/* || Sidebar */
+/* I define sidebar and bottombar as 2 orientations of
+navigation bar */
+.navbar {
+  /*
+  The sidebar is not fixed because I wanted to make it interact with the main content when expanded.
+
+  To avoid scrolling with the sidebar leaving behind, page scrolling will be disabled. The main content container will have overflow: scroll.
+
+  Bottombar's position is fixed because it doesn't expand
+
+  The sidebar content is centered horizontally
+  so that on resize there is always equal space around it.
+  */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  width: max(15vw, 250px);
+  height: 100dvh;
+  padding: 1vh 0;
+  background-color: white;
+  box-shadow: -4px 0px 9px 0px rgba(0, 0, 0, 0.5490196078);
+  font-weight: 300;
+}
+.navbar header {
+  display: flex;
+  align-items: center;
+  color: #bcbdc1;
+  font-size: max(1.3vw, 20px);
+  cursor: pointer;
+}
+.navbar header .nav-logo {
+  width: max(3vw, 50px);
+}
+.navbar header h1 {
+  margin: 0;
+}
+.navbar .nav-elements-container {
+  /* To keep the collapse button on the bottom of the navbar and 
+  on vertical resize to avoid overlapping I used display: flex, justified
+  with space-between instead of position: absolute, bottom: 0 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+.navbar .nav-links-container {
+  display: flex;
+  flex-direction: column;
+}
+.navbar .nav-el {
+  padding: max(0.5vw, 8px);
+  font-size: max(1.3vw, 20px);
+  cursor: pointer;
+}
+.navbar .nav-el img {
+  width: max(2vw, 25px);
+}
+.navbar .nav-el--selected {
+  border: 1px solid #203d89;
+  color: #203d89;
+  border-radius: 20px;
+}
+
+/* || Horizontal flow with 0.5vw gap and vertical centering*/
+.hz {
+  display: flex;
+  align-items: center;
+  gap: 0.5vw;
 }
 
 /*# sourceMappingURL=style.css.map */

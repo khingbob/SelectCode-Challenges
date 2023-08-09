@@ -6,5 +6,41 @@
     <title>CSS Challenge</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body></body>
+  <body>
+    <!--Navigation bar-->
+    <aside class="navbar">
+      <!-- Company Logo -->
+      <header>
+        <img class="nav-logo" src="assets/logo.png" alt="Logo icon" />
+        <h1>Logo</h1>
+      </header>
+      <!-- Navbar links + collapse button-->
+      <section class="nav-elements-container">
+        <!-- Navbar links -->
+        <nav class="nav-links-container">
+          <div class="nav-el nav-el--selected hz">
+            <img src="assets/dashboard.png" alt="Navigation bar icon" />
+            <div class="nav-text">Dashboard</div>
+          </div>
+          <div class="nav-el hz">
+            <img src="assets/customers.png" alt="Navigation bar icon" />
+            <div class="nav-text">Customers</div>
+          </div>
+          <div class="nav-el hz">
+            <img src="assets/settings.png" alt="Navigation bar icon" />
+            <div class="nav-text">Settings</div>
+          </div>
+        </nav>
+        <!-- Navbar collapse button -->
+        <footer class="nav-el hz">
+          <img
+            class="coll-btn-i"
+            src="assets/collapse.png"
+            alt="Navigation bar icon"
+          />
+          <div class="nav-text">Collapse</div>
+        </footer>
+      </section>
+    </aside>
+  </body>
 </html>
