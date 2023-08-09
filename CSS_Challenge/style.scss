@@ -9,6 +9,25 @@ body {
   font-family: Inter, Arial, sans-serif;
 }
 
+/* Because you cannot animate the display change, during sidebar expansion
+the border of the house icon stretches way too abrupt, that's why I added some animation,
+where the border dissapears and then fades in after the change*/
+@keyframes home-expansion {
+  from {
+    border: 1px solid transparent;
+  }
+  to {
+    border: 1px solid #203d89;
+  }
+}
+
+/* Fade in after display change for sidebar text */
+@keyframes text-expansion {
+  to {
+    opacity: 1;
+  }
+}
+
 /* || Sidebar */
 
 /* I define sidebar and bottombar as 2 orientations of
@@ -31,13 +50,21 @@ navigation bar */
   box-sizing: border-box;
   position: relative;
 
-  width: max(15vw, 250px);
+  width: max(5vw, 100px);
   height: 100dvh;
   padding: 1vh 0;
 
   background-color: white;
   box-shadow: -4px 0px 9px 0px #0000008c;
   font-weight: 300;
+
+  transition: width 0.3s ease-in-out;
+
+  // sidebar text before expansion
+  .exp-text {
+    display: none;
+    opacity: 0;
+  }
 
   header {
     display: flex;
@@ -77,15 +104,36 @@ navigation bar */
       width: max(2vw, 25px);
     }
   }
-
+  footer {
+    /*the collapse button's source file looks left
+      but in the starting position it shoud be right*/
+    .coll-btn-i {
+      transform: rotate(180deg);
+    }
+  }
   // modifier for styling the selected page on navbar
   .nav-el--selected {
     border: 1px solid #203d89;
     color: #203d89;
     border-radius: 20px;
   }
-}
+  /* Expansion of sidebar */
+  &:hover {
+    width: max(15vw, 250px);
+    .nav-el--selected {
+      border: none;
+      animation: home-expansion 0.5s 0.1s forwards;
+    }
 
+    .exp-text {
+      display: block;
+      animation: text-expansion 0.5s 0.1s forwards;
+    }
+    .coll-btn-i {
+      transform: rotate(0);
+    }
+  }
+}
 /* || Horizontal flow with 0.5vw gap and vertical centering*/
 .hz {
   display: flex;
