@@ -133,6 +133,62 @@ navigation bar */
       transform: rotate(0);
     }
   }
+  /* || Bottombar */
+  @media (max-width: 800px) {
+    position: fixed;
+    box-sizing: border-box;
+    flex-direction: row;
+    bottom: 0;
+    width: 100%;
+    height: max(7vh, 30px);
+    padding: 0 5vw;
+
+    box-shadow: 0px 0px 4px 0px #0000008c;
+
+    header {
+      display: none;
+    }
+
+    .nav-elements-container {
+      flex-direction: row;
+      height: 100%;
+      width: 100%;
+    }
+    .nav-links-container {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .nav-el {
+      box-sizing: border-box;
+      height: 80%;
+      padding: 0 2vw;
+      img {
+        width: auto;
+        height: 70%;
+      }
+    }
+
+    .coll-btn-i {
+      display: none;
+    }
+    /*Preventing expansion of bottombar by overriding
+    sidebar's expansion*/
+    &:hover {
+      width: 100%;
+
+      .exp-text {
+        display: none;
+        animation: none;
+      }
+
+      .nav-el--selected {
+        border: 1px solid #203d89;
+        animation: none;
+      }
+    }
+  }
 }
 /* || Horizontal flow with 0.5vw gap and vertical centering*/
 .hz {

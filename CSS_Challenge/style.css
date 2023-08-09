@@ -50,6 +50,7 @@ navigation bar */
   font-weight: 300;
   transition: width 0.3s ease-in-out;
   /* Expansion of sidebar */
+  /* || Bottombar */
 }
 .navbar .exp-text {
   display: none;
@@ -114,6 +115,57 @@ navigation bar */
 }
 .navbar:hover .coll-btn-i {
   transform: rotate(0);
+}
+@media (max-width: 800px) {
+  .navbar {
+    position: fixed;
+    box-sizing: border-box;
+    flex-direction: row;
+    bottom: 0;
+    width: 100%;
+    height: max(7vh, 30px);
+    padding: 0 5vw;
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.5490196078);
+    /*Preventing expansion of bottombar by overriding
+    sidebar's expansion*/
+  }
+  .navbar header {
+    display: none;
+  }
+  .navbar .nav-elements-container {
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+  }
+  .navbar .nav-links-container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .navbar .nav-el {
+    box-sizing: border-box;
+    height: 80%;
+    padding: 0 2vw;
+  }
+  .navbar .nav-el img {
+    width: auto;
+    height: 70%;
+  }
+  .navbar .coll-btn-i {
+    display: none;
+  }
+  .navbar:hover {
+    width: 100%;
+  }
+  .navbar:hover .exp-text {
+    display: none;
+    animation: none;
+  }
+  .navbar:hover .nav-el--selected {
+    border: 1px solid #203d89;
+    animation: none;
+  }
 }
 
 /* || Horizontal flow with 0.5vw gap and vertical centering*/
