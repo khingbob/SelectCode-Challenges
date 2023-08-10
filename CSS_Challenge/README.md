@@ -1,4 +1,4 @@
-This is a CSS-Challenge from <SelectCode/> where I had to turn a figma design file into
+This is a CSS-Challenge from `<SelectCode/>` where I had to turn a figma design file into
 an HTML and CSS project. It was an interisting experience because of the limited tools I could use.
 Many things I would've done using JavaScript or React.js but this constraint was a good test
 for my CSS-only skills.
