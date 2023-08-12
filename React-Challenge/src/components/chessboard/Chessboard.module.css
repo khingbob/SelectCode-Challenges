@@ -1,5 +1,11 @@
 #chessboard {
+  display: flex;
+  flex-wrap: wrap;
+  /* this matches the custom coordinate system with the actual placement */
+  flex-direction: column-reverse;
+
   height: min(90vh, 90vw);
   width: min(90vh, 90vw);
-  border: 5px solid black;
+  border: 5px solid gray;
+  background-color: gray;
 }

@@ -1,10 +1,23 @@
 .square {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: calc(100% / 8);
   height: calc(100% / 8);
 }
-.black {
-  background-color: black;
+.gray {
+  background-color: gray;
 }
 .white {
   background-color: white;
+}
+.blue {
+  background-color: blue;
+}
+.figure {
+  height: 70%;
+  cursor: pointer;
+}
+.figure:hover {
+  background-color: rgba(0, 36, 128, 0.197);
 }
