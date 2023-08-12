@@ -1,0 +1,10 @@
+.square {
+  width: calc(100% / 8);
+  height: calc(100% / 8);
+}
+.black {
+  background-color: black;
+}
+.white {
+  background-color: white;
+}

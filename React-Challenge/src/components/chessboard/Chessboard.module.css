@@ -1,0 +1,5 @@
+#chessboard {
+  height: min(90vh, 90vw);
+  width: min(90vh, 90vw);
+  border: 5px solid black;
+}
