@@ -49,10 +49,10 @@ navigation bar */
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-sizing: border-box;
   position: relative;
   z-index: 5;
 
+  box-sizing: border-box;
   width: max(5vw, 100px);
   height: 100dvh;
   padding: 1vh 0;
@@ -117,8 +117,8 @@ navigation bar */
   // modifier for styling the selected page on navbar
   .nav-el--selected {
     border: 1px solid #203d89;
-    color: #203d89;
     border-radius: 20px;
+    color: #203d89;
   }
   /* Expansion of sidebar */
   &:hover {
@@ -138,10 +138,11 @@ navigation bar */
   }
   /* || Bottombar */
   @media (max-width: 800px) {
-    position: fixed;
-    box-sizing: border-box;
     flex-direction: row;
+    position: fixed;
+
     bottom: 0;
+    box-sizing: border-box;
     width: 100%;
     height: max(7vh, 30px);
     padding: 0 5vw;
@@ -195,14 +196,16 @@ navigation bar */
 }
 /* || Main Content */
 main {
-  width: 100%;
   position: relative;
+  width: 100%;
   z-index: 1;
   header {
     display: flex;
     position: fixed;
+
     width: 100%;
     padding: 0 2vw 0.5vh 2vw;
+
     color: #6b6b6b;
     background-color: #eae5e5;
     //Left side of the header
@@ -231,9 +234,9 @@ main {
     }
     //Right side of the header
     .user-icon {
-      height: max(8vh, 40px);
       position: fixed;
       right: 2vw;
+      height: max(8vh, 40px);
       cursor: pointer;
     }
   }
@@ -246,9 +249,10 @@ main {
     */
     gap: 4vh;
     justify-content: center;
+
+    box-sizing: border-box;
     width: 100%;
     height: 88vh;
-    box-sizing: border-box;
     overflow-y: scroll;
     margin-top: 10.5vh;
     padding-bottom: 10vh;
@@ -256,9 +260,9 @@ main {
     .project-cont {
       width: 20vw;
       min-width: 300px;
+      padding: 2vh 3vh;
       background-color: white;
       border-radius: 10px;
-      padding: 2vh 3vh;
       box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
 
       h3 {
@@ -267,11 +271,11 @@ main {
         font-size: max(3.4vh, 16px);
       }
       .project-text {
-        height: 20vh;
-        font-size: max(2.2vh, 13px);
         overflow-y: scroll;
+        height: 20vh;
         margin-bottom: 2vh;
         padding-right: 5px;
+        font-size: max(2.2vh, 13px);
         &::-webkit-scrollbar {
           width: 3px;
         }
@@ -282,8 +286,8 @@ main {
       }
       .project-data-cont {
         display: flex;
-        width: 100%;
         justify-content: space-between;
+        width: 100%;
         font-size: max(1.5vh, 10px);
         white-space: nowrap;
       }
