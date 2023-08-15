@@ -11,13 +11,11 @@
 .white {
   background-color: white;
 }
-.blue {
-  background-color: blue;
+/* selected square */
+.selected {
+  background-color: #a1fb82;
 }
 .figure {
   height: 70%;
   cursor: pointer;
-}
-.figure:hover {
-  background-color: rgba(0, 36, 128, 0.197);
 }
