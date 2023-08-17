@@ -1,7 +1,4 @@
 .square {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: calc(100% / 8);
   height: calc(100% / 8);
 }
@@ -14,6 +11,16 @@
 /* selected square */
 .selected {
   background-color: #a1fb82;
+}
+.attack {
+  background-color: red;
+}
+.highlight {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .figure {
   height: 70%;

@@ -1,5 +1,6 @@
 * {
   user-select: none;
+  -webkit-user-drag: none;
   /* removing tap highlight on mobile */
   -webkit-tap-highlight-color: transparent;
 }
