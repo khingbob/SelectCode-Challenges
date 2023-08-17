@@ -10,10 +10,10 @@
 }
 /* selected square */
 .selected {
-  background-color: #a1fb82;
+  background-color: #a1fb82ba;
 }
 .attack {
-  background-color: red;
+  background-color: #ff000063;
 }
 .highlight {
   width: 100%;

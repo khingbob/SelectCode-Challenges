@@ -59,18 +59,16 @@ const Square = (props) => {
   //removes the dots that the knight was showing when selected
   const knightDotsCleaner = (x, y) => {
     for (let xd = -2; xd <= 2; xd++) {
-      if (xd == 0) continue;
+      if (xd === 0) continue;
       for (let yd = -2; yd <= 2; yd++) {
-        if (Math.abs(Math.abs(xd) - Math.abs(yd)) != 1 || yd == 0) continue;
+        if (Math.abs(Math.abs(xd) - Math.abs(yd)) != 1 || yd === 0) continue;
         if (x + xd >= 0 && x + xd < 8 && y + yd >= 0 && y + yd < 8) {
           board[x + xd][y + yd] = {
-            key: x + xd + "|" + (y + yd),
-            id: x + xd + "|" + (y + yd),
-            squareColor: board[x + xd][y + yd].squareColor,
+            ...board[x + xd][y + yd],
             highlight: null,
             // if the aim was a dot it has to be cleaned, otherwise the figure should stay
             figure:
-              board[x + xd][y + yd].figure == "dot"
+              board[x + xd][y + yd].figure === "dot"
                 ? null
                 : board[x + xd][y + yd].figure,
           };
@@ -78,12 +76,64 @@ const Square = (props) => {
       }
     }
   };
+  // removes the dots that the queen was showing when selected
+  const queenDotsCleaner = (x, y) => {
+    const cleanQueenDot = (xi, yi) => {
+      board[xi][yi] = {
+        ...board[xi][yi],
+        figure: board[xi][yi].figure === "dot" ? null : board[xi][yi].figure,
+        highlight: null,
+      };
+    };
+
+    // horizontal left
+    for (let xi = x - 1; xi >= 0; xi--) {
+      cleanQueenDot(xi, y);
+      if (board[xi][y].figure && board[xi][y] !== "dot") break;
+    }
+    // diagonal up-left
+    for (let xi = x - 1, yi = y + 1; xi >= 0 && yi < 8; xi--, yi++) {
+      cleanQueenDot(xi, yi);
+      if (board[xi][yi].figure && board[xi][yi].figure !== "dot") break;
+    }
+    // vertical up
+    for (let yi = y + 1; yi < 8; yi++) {
+      cleanQueenDot(x, yi);
+      if (board[x][yi].figure && board[x][yi].figure !== "dot") break;
+    }
+    // diagonal up-right
+    for (let xi = x + 1, yi = y + 1; xi < 8 && yi < 8; xi++, yi++) {
+      cleanQueenDot(xi, yi);
+      if (board[xi][yi].figure && board[x][yi].figure !== "dot") break;
+    }
+    // horizontal right
+    for (let xi = x + 1; xi < 8; xi++) {
+      cleanQueenDot(xi, y);
+      if (board[xi][y].figure && board[xi][y].figure !== "dot") break;
+    }
+    // diagonal down-right
+    for (let xi = x + 1, yi = y - 1; xi < 8 && yi >= 0; xi++, yi--) {
+      cleanQueenDot(xi, yi);
+      if (board[xi][yi].figure && board[xi][yi].figure !== "dot") break;
+    }
+    // down vertical
+    for (let yi = y - 1; y >= 0; yi++) {
+      cleanQueenDot(x, yi);
+      if (board[x][yi].figure && board[x][yi].figure !== "dot") break;
+    }
+    // diagonal down-left
+    for (let xi = x - 1, yi = y - 1; xi >= 0 && yi >= 0; xi--, yi--) {
+      cleanQueenDot(xi, yi);
+      if (board[xi][yi].figure && board[xi][yi].figure !== "dot") break;
+    }
+  };
 
   // matching cleaners with the figures
   const cleaners = {
     bknight: knightDotsCleaner,
     wknight: knightDotsCleaner,
-    // bqueen:queenDotsCleaner, wqueen: queenDotsCleaner,
+    bqueen: queenDotsCleaner,
+    wqueen: queenDotsCleaner,
   };
 
   /* || DIRECTIONS */
@@ -91,28 +141,79 @@ const Square = (props) => {
   //available movements for a knight
   const knightDirection = () => {
     for (let xd = -2; xd <= 2; xd++) {
-      if (xd == 0) continue;
+      if (xd === 0) continue;
       for (let yd = -2; yd <= 2; yd++) {
-        if (Math.abs(Math.abs(xd) - Math.abs(yd)) != 1 || yd == 0) continue;
+        if (Math.abs(Math.abs(xd) - Math.abs(yd)) != 1 || yd === 0) continue;
         if (x + xd >= 0 && x + xd < 8 && y + yd >= 0 && y + yd < 8) {
           board[x + xd][y + yd] = {
-            key: x + xd + "|" + (y + yd),
-            id: x + xd + "|" + (y + yd),
-            squareColor: board[x + xd][y + yd].squareColor,
+            ...board[x + xd][y + yd],
             figure: board[x + xd][y + yd].figure ?? "dot",
-            highlight: board[x + xd][y + yd].figure
-              ? highlights["attack"]
-              : null,
+            highlight: board[x + xd][y + yd].figure && "attack",
           };
         }
       }
+    }
+  };
+  //available movements for a queen
+  const queenDirection = () => {
+    //setting a dot by coordinates
+    const setQueenDot = (xi, yi) => {
+      board[xi][yi] = {
+        ...board[xi][yi],
+        figure: board[xi][yi].figure ?? "dot",
+        highlight: board[xi][yi].figure && "attack",
+      };
+    };
+
+    // setting dots starting from the queen to stop when they hit a target
+
+    // horizontal left
+    for (let xi = x - 1; xi >= 0; xi--) {
+      setQueenDot(xi, y);
+      if (board[xi][y].figure && board[xi][y] !== "dot") break;
+    }
+    // diagonal up-left
+    for (let xi = x - 1, yi = y + 1; xi >= 0 && yi < 8; xi--, yi++) {
+      setQueenDot(xi, yi);
+      if (board[xi][yi].figure && board[xi][yi].figure !== "dot") break;
+    }
+    // vertical up
+    for (let yi = y + 1; yi < 8; yi++) {
+      setQueenDot(x, yi);
+      if (board[x][yi].figure && board[x][yi].figure !== "dot") break;
+    }
+    // diagonal up-right
+    for (let xi = x + 1, yi = y + 1; xi < 8 && yi < 8; xi++, yi++) {
+      setQueenDot(xi, yi);
+      if (board[xi][yi].figure && board[x][yi].figure !== "dot") break;
+    }
+    // horizontal right
+    for (let xi = x + 1; xi < 8; xi++) {
+      setQueenDot(xi, y);
+      if (board[xi][y].figure && board[xi][y].figure !== "dot") break;
+    }
+    // diagonal down-right
+    for (let xi = x + 1, yi = y - 1; xi < 8 && yi >= 0; xi++, yi--) {
+      setQueenDot(xi, yi);
+      if (board[xi][yi].figure && board[xi][yi].figure !== "dot") break;
+    }
+    // down vertical
+    for (let yi = y - 1; y >= 0; yi++) {
+      setQueenDot(x, yi);
+      if (board[x][yi].figure && board[x][yi].figure !== "dot") break;
+    }
+    // diagonal down-left
+    for (let xi = x - 1, yi = y - 1; xi >= 0 && yi >= 0; xi--, yi--) {
+      setQueenDot(xi, yi);
+      if (board[xi][yi].figure && board[xi][yi].figure !== "dot") break;
     }
   };
 
   const directions = {
     wknight: knightDirection,
     bknight: knightDirection,
-    // wqueen: queenDirection, bqueen: queenDirection
+    wqueen: queenDirection,
+    bqueen: queenDirection,
   };
 
   // Click-handler on a square
