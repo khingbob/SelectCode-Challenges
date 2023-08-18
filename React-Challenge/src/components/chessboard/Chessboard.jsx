@@ -11,6 +11,9 @@ const Chessboard = () => {
   // The last clicked square. Used for clean-up purposes
   const [clicked, setClicked] = useState(null);
 
+  // Player Turn: true -> white, false -> black to easilly toggle it
+  const [whiteTurn, setWhiteTurn] = useState(true);
+
   useEffect(() => {
     // Initial setup
     let tempBoard = [];
@@ -48,6 +51,8 @@ const Chessboard = () => {
             figure={data.figure}
             clicked={clicked}
             setClicked={setClicked}
+            whiteTurn={whiteTurn}
+            setWhiteTurn={setWhiteTurn}
           />
         ))
       )}

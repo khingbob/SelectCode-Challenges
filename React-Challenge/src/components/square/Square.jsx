@@ -11,6 +11,18 @@ const Square = (props) => {
   const board = [...props.board];
   const setBoard = props.setBoard;
 
+  //players turn: true -> white, false -> black
+  const whiteTurn = props.whiteTurn;
+  const setWhiteTurn = props.setWhiteTurn;
+
+  if (whiteTurn) {
+    document.getElementById("whiteTurn").style.opacity = 1;
+    document.getElementById("blackTurn").style.opacity = 0;
+  } else {
+    document.getElementById("whiteTurn").style.opacity = 0;
+    document.getElementById("blackTurn").style.opacity = 1;
+  }
+
   //previously clicked square state
   const clicked = props.clicked;
   const setClicked = props.setClicked;
@@ -34,13 +46,22 @@ const Square = (props) => {
   //square color
   const squareColor = props.squareColor;
 
-  /* object matching the figure prop with the imported variable  */
+  // object matching the figure prop with the imported variable
   const figures = {
     wknight,
     bknight,
     wqueen,
     bqueen,
     dot,
+  };
+
+  //matching figures with their colors
+  //white -> true, black -> false
+  const colors = {
+    wknight: true,
+    wqueen: true,
+    bknight: false,
+    bqueen: false,
   };
 
   // matching the square color prop with the class-name of the modular css component
@@ -66,10 +87,12 @@ const Square = (props) => {
         if (x + xd >= 0 && x + xd < 8 && y + yd >= 0 && y + yd < 8) {
           board[x + xd][y + yd] = {
             ...board[x + xd][y + yd],
-            // on set-action if there is a figure it highlights on clean all the highlights are removed
+            // on set-action if there is an enemy figure it highlights on clean all the highlights are removed
             highlight:
               action === "set"
-                ? board[x + xd][y + yd].figure && "attack"
+                ? board[x + xd][y + yd].figure &&
+                  colors[board[x + xd][y + yd].figure] !== whiteTurn &&
+                  "attack"
                 : null,
             // on set if there is not a figure on the position then a dot should be set
             // on clean if there is a dot it should be removed
@@ -98,9 +121,14 @@ const Square = (props) => {
             : board[xi][yi].figure === "dot"
             ? null
             : board[xi][yi].figure,
-        // on set if there is a figure it should highlight
+        // on set if there is an enemy figure it should highlight
         // on clean all the highlights are removed
-        highlight: action === "set" ? board[xi][yi].figure && "attack" : null,
+        highlight:
+          action === "set"
+            ? board[xi][yi].figure &&
+              colors[board[xi][yi].figure] !== whiteTurn &&
+              "attack"
+            : null,
       };
       // checks if a playable figure was hit
       return board[xi][yi].figure && board[xi][yi].figure !== "dot";
@@ -152,22 +180,27 @@ const Square = (props) => {
 
   // Click-handler on a square
   const squareClick = () => {
-    // cleaning if a figure was selected before
-    if (clicked && board[cx][cy].figure) {
-      dotsActions[board[cx][cy].figure](cx, cy, "clean");
-      board[cx][cy] = { ...board[cx][cy], highlight: null };
-    }
-    // giving a highlight if a figure was selected now
-    if (figure && figure != "dot")
-      board[x][y] = { ...board[x][y], highlight: "selected" };
-
     // a figure movement
     if (figure === "dot") {
+      dotsActions[board[cx][cy].figure](cx, cy, "clean");
       board[x][y] = { ...board[x][y], figure: board[cx][cy].figure };
-      board[cx][cy] = { ...board[cx][cy], figure: null };
+      board[cx][cy] = { ...board[cx][cy], highlight: null, figure: null };
+      setWhiteTurn(!whiteTurn);
+    } else if (board[x][y].highlight === "attack") {
+      board[x][y].figure = board[cx][cy].figure;
+      dotsActions[board[cx][cy].figure](cx, cy, "clean");
+      board[cx][cy] = { ...board[cx][cy], highlight: null, figure: null };
+      setWhiteTurn(!whiteTurn);
     }
-    //showing the available movements for this figure
-    figure && figure != "dot" && dotsActions[figure](x, y, "set");
+    //making the figures selctable only on the right players turn
+    if (colors[figure] === whiteTurn) {
+      // giving a highlight if a figure has been selected now
+      if (figure && figure !== "dot")
+        board[x][y] = { ...board[x][y], highlight: "selected" };
+
+      //showing the available movements for this figure
+      figure && figure != "dot" && dotsActions[figure](x, y, "set");
+    }
 
     //rerendering changes
     setBoard(board);

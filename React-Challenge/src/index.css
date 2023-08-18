@@ -14,4 +14,50 @@ body {
   padding: 0;
 
   height: 100vh;
+
+  background-color: rgb(127 127 146);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#root {
+  display: flex;
+  gap: 2vw;
+}
+
+.turns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-sizing: border-box;
+  padding: max(1vw, 1vh) max(3vw, 3vh);
+
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: max(2vw, 2vh);
+
+  transition: opacity 0.1s ease-in-out;
+}
+#whiteTurn {
+  align-self: flex-end;
+  background-color: white;
+}
+#blackTurn {
+  align-self: flex-start;
+  opacity: 0;
+  background-color: black;
+  color: white;
+}
+@media (max-width: 700px) {
+  #root {
+    flex-direction: column;
+  }
+  #blackTurn {
+    position: absolute;
+    top: 1vh;
+  }
+  #whiteTurn {
+    position: absolute;
+    bottom: 1vh;
+  }
 }
