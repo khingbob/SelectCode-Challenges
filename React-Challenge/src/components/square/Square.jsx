@@ -4,7 +4,6 @@ import bknight from "../../assets/bknight.png";
 import wqueen from "../../assets/wqueen.png";
 import bqueen from "../../assets/bqueen.png";
 import dot from "../../assets/dot.png";
-import { useEffect, useState } from "react";
 /* A square gets passed the board, it can have a color and a highlight, contain the chess figures, and show movement symbols */
 const Square = (props) => {
   //board state management
@@ -12,16 +11,17 @@ const Square = (props) => {
   const board = [...props.board];
   const setBoard = props.setBoard;
 
-  //clicked square state
+  //previously clicked square state
   const clicked = props.clicked;
   const setClicked = props.setClicked;
+  //clicked coordinates
   const cx = clicked ? clicked[0] : null;
   const cy = clicked ? clicked[1] : null;
 
   //id of the square container
   const id = props.id;
 
-  //coordinates of the square
+  //coordinates of this square
   const x = parseInt(props.id.split("|")[0]);
   const y = parseInt(props.id.split("|")[1]);
 
@@ -54,10 +54,11 @@ const Square = (props) => {
     attack: css.attack,
   };
 
-  /* || CLEANERS */
+  /* || Actions with direction dots */
 
-  //removes the dots that the knight was showing when selected
-  const knightDotsCleaner = (x, y) => {
+  const knightDots = (x, y, action) => {
+    // (x,y) is the coordinates of the knight
+    // a dot can be set or cleaned as an action
     for (let xd = -2; xd <= 2; xd++) {
       if (xd === 0) continue;
       for (let yd = -2; yd <= 2; yd++) {
@@ -65,10 +66,17 @@ const Square = (props) => {
         if (x + xd >= 0 && x + xd < 8 && y + yd >= 0 && y + yd < 8) {
           board[x + xd][y + yd] = {
             ...board[x + xd][y + yd],
-            highlight: null,
-            // if the aim was a dot it has to be cleaned, otherwise the figure should stay
+            // on set-action if there is a figure it highlights on clean all the highlights are removed
+            highlight:
+              action === "set"
+                ? board[x + xd][y + yd].figure && "attack"
+                : null,
+            // on set if there is not a figure on the position then a dot should be set
+            // on clean if there is a dot it should be removed
             figure:
-              board[x + xd][y + yd].figure === "dot"
+              action === "set"
+                ? board[x + xd][y + yd].figure ?? "dot"
+                : board[x + xd][y + yd].figure === "dot"
                 ? null
                 : board[x + xd][y + yd].figure,
           };
@@ -76,158 +84,91 @@ const Square = (props) => {
       }
     }
   };
-  // removes the dots that the queen was showing when selected
-  const queenDotsCleaner = (x, y) => {
-    const cleanQueenDot = (xi, yi) => {
+
+  const queenDots = (x, y, action) => {
+    // the action with the dot
+    const queenDot = (xi, yi) => {
       board[xi][yi] = {
         ...board[xi][yi],
-        figure: board[xi][yi].figure === "dot" ? null : board[xi][yi].figure,
-        highlight: null,
+        // on set if there is no figures a dot should be set
+        // on clean if there is a dot it should be cleaned
+        figure:
+          action === "set"
+            ? board[xi][yi].figure ?? "dot"
+            : board[xi][yi].figure === "dot"
+            ? null
+            : board[xi][yi].figure,
+        // on set if there is a figure it should highlight
+        // on clean all the highlights are removed
+        highlight: action === "set" ? board[xi][yi].figure && "attack" : null,
       };
+      // checks if a playable figure was hit
+      return board[xi][yi].figure && board[xi][yi].figure !== "dot";
     };
+
+    // dotting goes starting from the figure outwards to avoid dots going behind the figures
 
     // horizontal left
     for (let xi = x - 1; xi >= 0; xi--) {
-      cleanQueenDot(xi, y);
-      if (board[xi][y].figure && board[xi][y] !== "dot") break;
+      if (queenDot(xi, y)) break;
     }
     // diagonal up-left
     for (let xi = x - 1, yi = y + 1; xi >= 0 && yi < 8; xi--, yi++) {
-      cleanQueenDot(xi, yi);
-      if (board[xi][yi].figure && board[xi][yi].figure !== "dot") break;
+      if (queenDot(xi, yi)) break;
     }
     // vertical up
     for (let yi = y + 1; yi < 8; yi++) {
-      cleanQueenDot(x, yi);
-      if (board[x][yi].figure && board[x][yi].figure !== "dot") break;
+      if (queenDot(x, yi)) break;
     }
     // diagonal up-right
     for (let xi = x + 1, yi = y + 1; xi < 8 && yi < 8; xi++, yi++) {
-      cleanQueenDot(xi, yi);
-      if (board[xi][yi].figure && board[x][yi].figure !== "dot") break;
+      if (queenDot(xi, yi)) break;
     }
     // horizontal right
     for (let xi = x + 1; xi < 8; xi++) {
-      cleanQueenDot(xi, y);
-      if (board[xi][y].figure && board[xi][y].figure !== "dot") break;
+      if (queenDot(xi, y)) break;
     }
     // diagonal down-right
     for (let xi = x + 1, yi = y - 1; xi < 8 && yi >= 0; xi++, yi--) {
-      cleanQueenDot(xi, yi);
-      if (board[xi][yi].figure && board[xi][yi].figure !== "dot") break;
+      if (queenDot(xi, yi)) break;
     }
-    // down vertical
-    for (let yi = y - 1; y >= 0; yi++) {
-      cleanQueenDot(x, yi);
-      if (board[x][yi].figure && board[x][yi].figure !== "dot") break;
+    // vertical down
+    for (let yi = y - 1; yi >= 0; yi--) {
+      if (queenDot(x, yi)) break;
     }
     // diagonal down-left
     for (let xi = x - 1, yi = y - 1; xi >= 0 && yi >= 0; xi--, yi--) {
-      cleanQueenDot(xi, yi);
-      if (board[xi][yi].figure && board[xi][yi].figure !== "dot") break;
+      if (queenDot(xi, yi)) break;
     }
   };
 
-  // matching cleaners with the figures
-  const cleaners = {
-    bknight: knightDotsCleaner,
-    wknight: knightDotsCleaner,
-    bqueen: queenDotsCleaner,
-    wqueen: queenDotsCleaner,
-  };
-
-  /* || DIRECTIONS */
-
-  //available movements for a knight
-  const knightDirection = () => {
-    for (let xd = -2; xd <= 2; xd++) {
-      if (xd === 0) continue;
-      for (let yd = -2; yd <= 2; yd++) {
-        if (Math.abs(Math.abs(xd) - Math.abs(yd)) != 1 || yd === 0) continue;
-        if (x + xd >= 0 && x + xd < 8 && y + yd >= 0 && y + yd < 8) {
-          board[x + xd][y + yd] = {
-            ...board[x + xd][y + yd],
-            figure: board[x + xd][y + yd].figure ?? "dot",
-            highlight: board[x + xd][y + yd].figure && "attack",
-          };
-        }
-      }
-    }
-  };
-  //available movements for a queen
-  const queenDirection = () => {
-    //setting a dot by coordinates
-    const setQueenDot = (xi, yi) => {
-      board[xi][yi] = {
-        ...board[xi][yi],
-        figure: board[xi][yi].figure ?? "dot",
-        highlight: board[xi][yi].figure && "attack",
-      };
-    };
-
-    // setting dots starting from the queen to stop when they hit a target
-
-    // horizontal left
-    for (let xi = x - 1; xi >= 0; xi--) {
-      setQueenDot(xi, y);
-      if (board[xi][y].figure && board[xi][y] !== "dot") break;
-    }
-    // diagonal up-left
-    for (let xi = x - 1, yi = y + 1; xi >= 0 && yi < 8; xi--, yi++) {
-      setQueenDot(xi, yi);
-      if (board[xi][yi].figure && board[xi][yi].figure !== "dot") break;
-    }
-    // vertical up
-    for (let yi = y + 1; yi < 8; yi++) {
-      setQueenDot(x, yi);
-      if (board[x][yi].figure && board[x][yi].figure !== "dot") break;
-    }
-    // diagonal up-right
-    for (let xi = x + 1, yi = y + 1; xi < 8 && yi < 8; xi++, yi++) {
-      setQueenDot(xi, yi);
-      if (board[xi][yi].figure && board[x][yi].figure !== "dot") break;
-    }
-    // horizontal right
-    for (let xi = x + 1; xi < 8; xi++) {
-      setQueenDot(xi, y);
-      if (board[xi][y].figure && board[xi][y].figure !== "dot") break;
-    }
-    // diagonal down-right
-    for (let xi = x + 1, yi = y - 1; xi < 8 && yi >= 0; xi++, yi--) {
-      setQueenDot(xi, yi);
-      if (board[xi][yi].figure && board[xi][yi].figure !== "dot") break;
-    }
-    // down vertical
-    for (let yi = y - 1; y >= 0; yi++) {
-      setQueenDot(x, yi);
-      if (board[x][yi].figure && board[x][yi].figure !== "dot") break;
-    }
-    // diagonal down-left
-    for (let xi = x - 1, yi = y - 1; xi >= 0 && yi >= 0; xi--, yi--) {
-      setQueenDot(xi, yi);
-      if (board[xi][yi].figure && board[xi][yi].figure !== "dot") break;
-    }
-  };
-
-  const directions = {
-    wknight: knightDirection,
-    bknight: knightDirection,
-    wqueen: queenDirection,
-    bqueen: queenDirection,
+  //matching the String value of figure with the functions
+  const dotsActions = {
+    wknight: knightDots,
+    bknight: knightDots,
+    wqueen: queenDots,
+    bqueen: queenDots,
   };
 
   // Click-handler on a square
   const squareClick = () => {
     // cleaning if a figure was selected before
     if (clicked && board[cx][cy].figure) {
-      cleaners[board[cx][cy].figure](cx, cy);
+      dotsActions[board[cx][cy].figure](cx, cy, "clean");
       board[cx][cy] = { ...board[cx][cy], highlight: null };
     }
     // giving a highlight if a figure was selected now
     if (figure && figure != "dot")
       board[x][y] = { ...board[x][y], highlight: "selected" };
+
+    // a figure movement
+    if (figure === "dot") {
+      board[x][y] = { ...board[x][y], figure: board[cx][cy].figure };
+      board[cx][cy] = { ...board[cx][cy], figure: null };
+    }
     //showing the available movements for this figure
-    figure && figure != "dot" && directions[figure]();
+    figure && figure != "dot" && dotsActions[figure](x, y, "set");
+
     //rerendering changes
     setBoard(board);
     //updating the last clicked square
