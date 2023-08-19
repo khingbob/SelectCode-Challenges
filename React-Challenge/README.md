@@ -11,4 +11,4 @@ To run a demo you should:
 2. In the terminal open the directory "/React-Challenge"
 3. `>` npm i
 4. `>` npm run dev
-5. open it in localhost with the given port
+5. open it in on a browser on localhost with the given port
