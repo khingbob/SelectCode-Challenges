@@ -28,4 +28,5 @@
 .figure {
   height: 70%;
   cursor: pointer;
+  transition: transform 0.5s ease-in-out;
 }

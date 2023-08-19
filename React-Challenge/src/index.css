@@ -14,6 +14,7 @@ body {
   padding: 0;
 
   height: 100vh;
+  overflow: hidden;
 
   background-color: rgb(127 127 146);
   font-family: Arial, Helvetica, sans-serif;
@@ -22,6 +23,7 @@ body {
 #root {
   display: flex;
   gap: 2vw;
+  transition: transform 0.5s ease-in-out;
 }
 
 .turns {
@@ -29,17 +31,25 @@ body {
   justify-content: center;
   align-items: center;
 
-  box-sizing: border-box;
   padding: max(1vw, 1vh) max(3vw, 3vh);
 
   border-radius: 10px;
   font-weight: 600;
   font-size: max(2vw, 2vh);
 
-  transition: opacity 0.1s ease-in-out;
+  transition: opacity 0.1s ease-in-out, transform 0.5s ease-in-out;
+}
+#rightColumn {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+}
+#rotate {
+  width: max(5vw, 5vh);
+  height: max(4vw, 4vh);
+  cursor: pointer;
 }
 #whiteTurn {
-  align-self: flex-end;
   background-color: white;
 }
 #blackTurn {
@@ -102,6 +112,9 @@ body {
 @media (max-width: 700px) {
   #root {
     flex-direction: column;
+  }
+  #rotate {
+    align-self: end;
   }
   #blackTurn {
     position: absolute;

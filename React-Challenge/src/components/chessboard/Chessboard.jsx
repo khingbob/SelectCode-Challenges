@@ -20,22 +20,23 @@ const Chessboard = () => {
     setWhiteTurn(true);
     let tempBoard = [];
     for (let x = 0; x < 8; x++) {
-      let row = [];
+      let column = [];
       let a = x % 2 == 0 ? "white" : "gray";
       let b = x % 2 == 0 ? "gray" : "white";
       for (let y = 0; y < 8; y++) {
-        row.push({
+        column.push({
           key: x + "|" + y,
           id: x + "|" + y,
           //color of the square
           squareColor: y % 2 == 0 ? a : b,
+          //setting up figures
           figure:
             (y == 1 && (x < 4 ? "wqueen" : "wknight")) ||
             (y == 6 && (x < 4 ? "bqueen" : "bknight")) ||
             null,
         });
       }
-      tempBoard.push(row);
+      tempBoard.push(column);
     }
     setBoard(tempBoard);
   };
