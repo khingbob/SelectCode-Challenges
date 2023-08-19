@@ -73,6 +73,7 @@ const Square = (props) => {
   const highlights = {
     selected: css.selected,
     attack: css.attack,
+    check: css.check,
   };
 
   /* || Actions with direction dots */
@@ -87,12 +88,17 @@ const Square = (props) => {
         if (x + xd >= 0 && x + xd < 8 && y + yd >= 0 && y + yd < 8) {
           board[x + xd][y + yd] = {
             ...board[x + xd][y + yd],
-            // on set-action if there is an enemy figure it highlights on clean all the highlights are removed
+            // on set-action if there is an enemy figure it highlights, if it's a queen it's set to check
+            // on clean all the highlights are removed
             highlight:
               action === "set"
-                ? board[x + xd][y + yd].figure &&
-                  colors[board[x + xd][y + yd].figure] !== whiteTurn &&
-                  "attack"
+                ? (board[x + xd][y + yd].figure === "bqueen" ||
+                    board[x + xd][y + yd].figure === "wqueen") &&
+                  colors[board[x + xd][y + yd].figure] !== whiteTurn
+                  ? "check"
+                  : board[x + xd][y + yd].figure &&
+                    colors[board[x + xd][y + yd].figure] !== whiteTurn &&
+                    "attack"
                 : null,
             // on set if there is not a figure on the position then a dot should be set
             // on clean if there is a dot it should be removed
@@ -188,12 +194,24 @@ const Square = (props) => {
       board[x][y] = { ...board[x][y], figure: board[cx][cy].figure };
       board[cx][cy] = { ...board[cx][cy], highlight: null, figure: null };
       setWhiteTurn(!whiteTurn);
-    } else if (board[x][y].highlight === "attack") {
-      //taking a piece
+    }
+    //taking a piece
+    else if (
+      board[x][y].highlight === "attack" ||
+      board[x][y].highlight === "check"
+    ) {
+      let takenPiece = board[x][y].figure;
       board[x][y].figure = board[cx][cy].figure;
       dotsActions[board[cx][cy].figure](cx, cy, "clean");
       board[cx][cy] = { ...board[cx][cy], highlight: null, figure: null };
       setWhiteTurn(!whiteTurn);
+
+      //End-Game
+      if (takenPiece === "wqueen") {
+        document.getElementById("blackWon").classList.add("endGameExpansion");
+      } else if (takenPiece === "bqueen") {
+        document.getElementById("whiteWon").classList.add("endGameExpansion");
+      }
     } else {
       //deselecting a figure
       if (clicked && board[cx][cy].figure) {
@@ -210,7 +228,6 @@ const Square = (props) => {
         figure && figure != "dot" && dotsActions[figure](x, y, "set");
       }
     }
-
     //rerendering changes
     setBoard(board);
     //updating the last clicked square

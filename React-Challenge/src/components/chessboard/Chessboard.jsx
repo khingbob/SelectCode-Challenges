@@ -14,8 +14,10 @@ const Chessboard = () => {
   // Player Turn: true -> white, false -> black to easilly toggle it
   const [whiteTurn, setWhiteTurn] = useState(true);
 
-  useEffect(() => {
-    // Initial setup
+  const initialSetup = () => {
+    setBoard([]);
+    setClicked(null);
+    setWhiteTurn(true);
     let tempBoard = [];
     for (let x = 0; x < 8; x++) {
       let row = [];
@@ -36,6 +38,19 @@ const Chessboard = () => {
       tempBoard.push(row);
     }
     setBoard(tempBoard);
+  };
+
+  useEffect(() => {
+    initialSetup();
+    // Restart button click
+    for (let i = 0; i < 2; i++) {
+      document
+        .getElementsByClassName("restart")
+        [i].addEventListener("click", (e) => {
+          initialSetup();
+          document.getElementsByClassName("endGame")[i].className = "endGame";
+        });
+    }
   }, []);
   return (
     <div id={css.chessboard}>
