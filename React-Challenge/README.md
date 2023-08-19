@@ -9,6 +9,6 @@ The last bonus was also a tricky one. As I understand the task wanted me to work
 To run a demo you should:
 1. Download the repository
 2. In the terminal open the directory "/React-Challenge"
-3. > npm i
-4. > npm run dev
-5. > open it in localhost with the given port
+3. `>` npm i
+4. `>` npm run dev
+5. open it in localhost with the given port
