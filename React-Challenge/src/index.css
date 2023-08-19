@@ -116,12 +116,7 @@ body {
   #rotate {
     align-self: end;
   }
-  #blackTurn {
-    position: absolute;
-    top: 1vh;
-  }
-  #whiteTurn {
-    position: absolute;
-    bottom: 1vh;
+  #rightColumn {
+    flex-direction: row;
   }
 }
