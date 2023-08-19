@@ -1,6 +1,6 @@
 # React-Challenge
 
-This is a React-Challenge from <SelectCode/> where I had to create a simplified version of the classical chess game.  It was a really good way to test my abilities in React and I enjoyed it.
+This is a React-Challenge from {<SelectCode/>} where I had to create a simplified version of the classical chess game.  It was a really good way to test my abilities in React and I enjoyed it.
 
 The most challenging thing was to make a fully functional system of components working together. The hardest challenges were to manage and rerender the changed positions of the chess pieces and their states correctly. I've tried a couple of methods of rendering the changes but they were too inefficient. In the end I came to a system where I have an array of all the squares that contain the full data about the square and when something changes in the array the whole board gets rerendered matching the new array.
 
