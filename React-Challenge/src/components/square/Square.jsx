@@ -182,24 +182,33 @@ const Square = (props) => {
   const squareClick = () => {
     // a figure movement
     if (figure === "dot") {
+      //cleaning all the dots
       dotsActions[board[cx][cy].figure](cx, cy, "clean");
+      //moving the figure
       board[x][y] = { ...board[x][y], figure: board[cx][cy].figure };
       board[cx][cy] = { ...board[cx][cy], highlight: null, figure: null };
       setWhiteTurn(!whiteTurn);
     } else if (board[x][y].highlight === "attack") {
+      //taking a piece
       board[x][y].figure = board[cx][cy].figure;
       dotsActions[board[cx][cy].figure](cx, cy, "clean");
       board[cx][cy] = { ...board[cx][cy], highlight: null, figure: null };
       setWhiteTurn(!whiteTurn);
-    }
-    //making the figures selctable only on the right players turn
-    if (colors[figure] === whiteTurn) {
-      // giving a highlight if a figure has been selected now
-      if (figure && figure !== "dot")
-        board[x][y] = { ...board[x][y], highlight: "selected" };
+    } else {
+      //deselecting a figure
+      if (clicked && board[cx][cy].figure) {
+        dotsActions[board[cx][cy].figure](cx, cy, "clean");
+        board[cx][cy] = { ...board[cx][cy], highlight: null };
+      }
+      //making the figures selctable only on the right players turn
+      if (colors[figure] === whiteTurn) {
+        // giving a highlight if a figure has been selected now
+        if (figure && figure !== "dot")
+          board[x][y] = { ...board[x][y], highlight: "selected" };
 
-      //showing the available movements for this figure
-      figure && figure != "dot" && dotsActions[figure](x, y, "set");
+        //showing the available movements for this figure
+        figure && figure != "dot" && dotsActions[figure](x, y, "set");
+      }
     }
 
     //rerendering changes
