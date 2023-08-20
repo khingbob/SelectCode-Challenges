@@ -6,6 +6,8 @@ The most challenging thing was to make a fully functional system of components w
 
 The last bonus task was also a tricky one. As I understand the task wanted me to work with React to rerender the board by mirroring it both vertically and horizontally. But the main task of the challenge was problem solving and solving it efficiently. So I came up with an idea to just flip the board literraly  without rerendering anythinig. It was way easier to do and it looks much more pleasant.
 
+After I finished the project I deployed it to Netlify for testing purposes but came across an error with loading the module script. I tried couple of things to solve it but did not succeed. Locally the project was running fine. As online deployment was not part of the task, I decided to give up on that.
+
 To run a demo you should:
 1. Download the repository
 2. In the terminal open the directory "/React-Challenge"
